@@ -1,5 +1,4 @@
 import requests
-import sys
 
 from bs4 import BeautifulSoup
 from urllib.parse import quote_plus
@@ -14,14 +13,10 @@ def get_search_url(query):
 
 
 def get_tabs_for_search(search_query):
-    print("Searching for query: {}".format(search_query))
-
     url = get_search_url(search_query)
-    print(url)
     r = requests.get(url)
 
     soup = BeautifulSoup(r.text, "lxml")
-    print(soup)
     result_lines = soup.findAll(
         attrs={"class": "tresults"})[0].findAll('tr')[1:]
 
