@@ -5,31 +5,57 @@ from bs4 import BeautifulSoup
 from urllib.parse import quote_plus
 
 
-search_url = "https://www.ultimate-guitar.com/search.php?search_type=title&value={query}"
+search_url = ("https://www.ultimate-guitar.com/"
+              "search.php?search_type=title&value={query}")
 
 
 def get_search_url(query):
     return search_url.format(query=quote_plus(query))
 
 
-r = requests.get(get_search_url("all too well"))
+def get_tabs_for_search(search_query):
+    print("Searching for query: {}".format(search_query))
 
-soup = BeautifulSoup(r.text, "lxml")
-result_lines = soup.findAll(attrs={"class": "tresults"})[0].findAll('tr')[1:]
+    url = get_search_url(search_query)
+    print(url)
+    r = requests.get(url)
 
-artist = ""
-for result_line in result_lines:
-    tds = result_line.findAll('td')
+    soup = BeautifulSoup(r.text, "lxml")
+    print(soup)
+    result_lines = soup.findAll(
+        attrs={"class": "tresults"})[0].findAll('tr')[1:]
 
-    curr_artist = tds[0].text.strip()
-    artist = curr_artist if curr_artist else artist
+    result_list = []
 
-    # get and check the tab type
-    tab_type = tds[-1].strong.text
+    artist = ""
+    for result_line in result_lines:
+        tds = result_line.findAll('td')
 
-    if tab_type not in ['chords', 'tab']:
-        continue
+        curr_artist = tds[0].text.strip()
+        artist = curr_artist if curr_artist else artist
 
-    link = tds[1].findAll("a", attrs={"class": "song result-link"})[0]['href']
+        # get and check the tab type
+        tab_type = tds[-1].strong.text
 
-    print("artist: {}\nlink:{}\ntab_type: {}".format(artist, link, tab_type))
+        if tab_type not in ['chords', 'tab']:
+            continue
+
+        link = tds[1].findAll(
+            "a", attrs={"class": "song result-link"})[0]['href']
+
+        result_list.append((artist, "name", tab_type, link))
+
+        # print("artist: {}\nlink:{}\ntab_type: {}".format(
+        #    artist, link, tab_type))
+
+    return result_list
+
+
+def main():
+    result = get_tabs_for_search("all too well")
+
+    print(result)
+
+
+if __name__ == '__main__':
+    main()
