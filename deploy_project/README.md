@@ -23,7 +23,7 @@ Going to deplay project: 'test_project' in: /home/datosh/Documents/git/useful_to
 ├── src
 │   └── main.cpp
 └── test
-├── CMakeLists.txt
-└── test.cpp
+    ├── CMakeLists.txt
+    └── test.cpp
 ```
 4 directories, 4 files
