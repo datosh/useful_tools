@@ -2,10 +2,14 @@
 
 ### Automates the annoying task to create a sekeleton for each project
 
+#### Features:
+
+- make format, to run clang-format over all src/ and include/ files
+
 #### TODO: 
 
 - Make install so this can be called from everywhere
-- Include clang-format & clang-tidy
+- clang-tidy
 - Include doxygen
 - Include other languages?
 
