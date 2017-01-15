@@ -23,6 +23,10 @@ set(CMAKE_CXX_COMPILER clang++)
 
 project(##PROJECTNAME##)
 
+# generate json-compilation-database
+# this has to come after project(...) or else cmake .. has to be run twice
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+
 # Run clang format on all files
 file(GLOB_RECURSE FILES_TO_FORMAT
     src/*
@@ -31,6 +35,15 @@ add_custom_target(format
     COMMAND clang-format
     -i
     ${FILES_TO_FORMAT})
+
+# Run clang tidy on all files
+file(GLOB_RECURSE FILES_TO_TIDY
+    src/*
+    include/*)
+add_custom_target(tidy
+    COMMAND clang-tidy
+    -p ${CMAKE_BINARY_DIR}
+    ${FILES_TO_TIDY})
 
 # add compiler flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -std=c++1z")
@@ -102,6 +115,7 @@ files_to_create = [
 
 files_to_copy = [
     (".clang-format", "."),
+    (".clang-tidy", "."),
 ]
 
 
