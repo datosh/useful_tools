@@ -169,7 +169,7 @@ def main():
     # Check and create root
     project_path = os.path.join(path, project_name)
     if not os.path.exists(project_path):
-        os.mkdir(project_path)
+        os.makedirs(project_path)
 
     create_folders(project_path)
     populate_names(project_name)
