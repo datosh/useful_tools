@@ -1,0 +1,7 @@
+CMakeEditor
+SideBarEnhancements
+Theme - Soda
+Indent XML
+Pretty JSON
+SublimeREPL
+
